@@ -3,3 +3,4 @@ ruby '3.2.2'
 
 gem 'airborne', '~> 0.3.7'
 gem 'awesome_print', '~> 1.9', '>= 1.9.2'
+gem 'artii', '~> 2.1', '>= 2.1.2'

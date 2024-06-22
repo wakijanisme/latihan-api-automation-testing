@@ -15,6 +15,7 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'airborne'
+require 'artii'
 require 'awesome_print'
 
 RSpec.configure do |config|
@@ -102,6 +103,102 @@ RSpec.configure do |config|
 
 Airborne.configure do |config|
   config.base_url='https://api.restful-api.dev'
+end
+
+# config.before(:each) do |example|
+#   puts "hook before"
+# end
+
+# config.after(:each) do |example|
+#   puts "hook after"
+# end
+
+# config.before(:suite) do |example|
+#   puts "hook before example"
+# end
+
+# config.after(:suite) do |example|
+#   puts "hook after example"
+# end
+
+# at_exit do
+#   puts "hook ketika semua example selesai dijalankan"
+# end
+
+# Define ANSI escape sequences for colors
+RESET   = "\e[0m"
+RED     = "\e[31m"
+GREEN   = "\e[32m"
+YELLOW  = "\e[33m"
+BLUE    = "\e[34m"
+MAGENTA = "\e[35m"
+CYAN    = "\e[36m"
+WHITE   = "\e[37m"
+
+config.before(:suite) do
+  # Code that will run before all examples (specs) in the suite
+
+  # Create an instance of Artii with a specific font
+  artii = Artii::Base.new(font: 'slant')
+
+  # Text to be converted to ASCII art
+  text = "JANCOK"
+
+  # Convert text to ASCII art
+  ascii_art = artii.asciify(text)
+
+  # Print ASCII art
+  puts ascii_art
+
+  $total_passed = 0
+  $total_failed = 0
+end
+
+config.before(:each) do |example|
+  # Kode yang akan dijalankan sebelum setiap contoh spesifikasi
+  # puts "Before hook: Setting up test environment"
+  puts "#{BLUE}----------------------------------------------------------------#{RESET}"
+  puts "#{MAGENTA}SCENARIO => #{RESET}" + example.description
+end
+
+config.after(:each) do |example|
+  # Kode yang akan dijalankan setelah setiap contoh spesifikasi
+  if example.exception.nil?
+    puts "  RESULT => #{GREEN}Passed#{RESET}"
+    $total_passed += 1
+  else
+    puts "  RESULT => #{RED}Failed#{RESET}"
+    $total_failed += 1
+  end
+
+end
+
+config.around(:each) do |example|
+  # puts "#{BLUE}----------------------------------------------------------------#{RESET}"
+  example.run
+  # puts "#{BLUE}----------------------------------------------------------------#{RESET}"
+end
+
+config.after(:suite) do
+  puts "#{BLUE}----------------------------------------------------------------#{RESET}"
+  # Code that will run before all examples (specs) in the suite
+  puts "Total #{GREEN}Passed#{RESET} Scenarios: #{GREEN}#{$total_passed}#{RESET}"
+  puts "Total #{RED}Failed#{RESET} Scenarios: #{RED}#{$total_failed}#{RESET}"
+end
+
+at_exit do
+  puts "#{BLUE}----------------------------------------------------------------#{RESET}"
+  # Create an instance of Artii with a specific font
+  artii = Artii::Base.new(font: 'slant')
+
+  # Text to be converted to ASCII art
+  text = "UDAH"
+
+  # Convert text to ASCII art
+  ascii_art = artii.asciify(text)
+
+  # Print ASCII art
+  puts ascii_art
 end
 
 end
